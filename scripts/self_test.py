@@ -66,6 +66,8 @@ def main() -> int:
         white_shifted = tmp_path / "white-shifted.png"
         paired_out = tmp_path / "paired.png"
         paired_webp = tmp_path / "paired.webp"
+        standard_jpeg = tmp_path / "standard.jpg"
+        standard_webp = tmp_path / "standard.webp"
         single_out = tmp_path / "single.png"
 
         save_rgba(truth, rgb, alpha)
@@ -163,6 +165,46 @@ def main() -> int:
             print(verify_webp_result.stdout)
             print(verify_webp_result.stderr, file=sys.stderr)
             return verify_webp_result.returncode
+
+        jpeg_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "export_image.py"),
+                "--input",
+                str(paired_out),
+                "--format",
+                "jpeg",
+                "--out",
+                str(standard_jpeg),
+                "--background",
+                "#ffffff",
+            ]
+        )
+        print("standard_jpeg_export_exit_code", jpeg_result.returncode)
+        if jpeg_result.returncode != 0 or not standard_jpeg.exists():
+            print(jpeg_result.stdout)
+            print(jpeg_result.stderr, file=sys.stderr)
+            return jpeg_result.returncode or 1
+
+        webp_standard_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "export_image.py"),
+                "--input",
+                str(paired_out),
+                "--format",
+                "webp",
+                "--out",
+                str(standard_webp),
+                "--quality",
+                "90",
+            ]
+        )
+        print("standard_webp_export_exit_code", webp_standard_result.returncode)
+        if webp_standard_result.returncode != 0 or not standard_webp.exists():
+            print(webp_standard_result.stdout)
+            print(webp_standard_result.stderr, file=sys.stderr)
+            return webp_standard_result.returncode or 1
 
     return 0
 

@@ -1,9 +1,10 @@
 # Generate Transparent Image Skill
 
-Codex skill for creating, extracting, and verifying true transparent PNG/WebP assets.
+Codex skill for generating, exporting, extracting, and verifying standard or transparent image assets.
 
 It supports:
 
+- standard image generation/export to PNG, JPEG, or WebP
 - verifying whether a PNG/WebP has a real alpha channel
 - extracting alpha from aligned black-background and white-background image pairs
 - approximate single-solid-background removal
@@ -21,6 +22,15 @@ git clone git@github.com:vidhatanand/generate-transparent-image-skill.git \
 
 Restart Codex after installing so the skill is discovered.
 
+To update an existing install:
+
+```bash
+cd ~/.codex/skills/generate-transparent-image
+git pull
+```
+
+Restart Codex after updating.
+
 ## Use
 
 Invoke it by name:
@@ -29,11 +39,31 @@ Invoke it by name:
 Use $generate-transparent-image to create a true transparent PNG from this image prompt.
 ```
 
+For a standard image:
+
+```text
+Use $generate-transparent-image to generate this prompt as a JPEG.
+```
+
 For an existing image:
 
 ```text
 Use $generate-transparent-image to remove the background from this image and verify the PNG has real transparency.
 ```
+
+If you do not specify `PNG`, `JPEG`, or `WebP`, the skill instructs Codex to ask for the needed output format before generating or exporting.
+
+## Export Standard Images
+
+```bash
+python3 scripts/export_image.py \
+  --input generated.png \
+  --format jpeg \
+  --out final.jpg \
+  --background "#ffffff"
+```
+
+Use `--format webp --quality 90` for standard WebP output, or `--preserve-alpha --lossless` when WebP transparency is required.
 
 ## Verify Transparency
 
@@ -74,4 +104,4 @@ Expected result includes:
 - single-background removal with higher error
 - misaligned black/white pair rejected
 - PNG and WebP alpha verification passing
-
+- standard JPEG and WebP export passing

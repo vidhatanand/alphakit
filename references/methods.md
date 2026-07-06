@@ -1,3 +1,13 @@
+# Image Output Methods
+
+## Format Selection
+
+- PNG: Use for transparency, lossless graphics, UI assets, and maximum compatibility.
+- JPEG: Use for opaque photographic or illustrative images when smaller file size is desired. JPEG cannot store transparency.
+- WebP: Use for web delivery. Use lossless WebP when alpha must be preserved; use quality-controlled lossy WebP for opaque standard images.
+
+Ask for the output format when the user does not specify PNG, JPEG/JPG, or WebP.
+
 # Transparent Image Methods
 
 ## Best Method Ranking

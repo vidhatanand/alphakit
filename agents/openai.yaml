@@ -1,4 +1,4 @@
 interface:
-  display_name: "True Transparent Images"
-  short_description: "Generate and verify real alpha PNG/WebP assets"
-  default_prompt: "Use $generate-transparent-image to create a true transparent PNG from this image prompt."
+  display_name: "Image Format and Transparency"
+  short_description: "Generate, export, and verify PNG/JPEG/WebP"
+  default_prompt: "Use $generate-transparent-image to create this image and ask me for PNG, JPEG, or WebP if I did not specify a format."
