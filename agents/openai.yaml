@@ -1,0 +1,4 @@
+interface:
+  display_name: "True Transparent Images"
+  short_description: "Generate and verify real alpha PNG/WebP assets"
+  default_prompt: "Use $generate-transparent-image to create a true transparent PNG from this image prompt."
