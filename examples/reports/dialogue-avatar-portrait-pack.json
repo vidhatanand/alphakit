@@ -1,0 +1,228 @@
+{
+  "black": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_01e6c11cc57295bf016a4d0658fa30819bbd56b6fe94668ba2.png",
+  "candidates": [
+    {
+      "name": "black-white",
+      "negative_diff_ratio": 0.12633641560872397,
+      "out": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack-black-white.png",
+      "profile_pass": true,
+      "report": {
+        "alpha_channel_count": 3,
+        "alpha_max": 1.0,
+        "alpha_min": 0.0,
+        "candidate_name": "black-white",
+        "channel_spread_max": 0.26272234320640564,
+        "channel_spread_mean": 0.009273103438317776,
+        "channel_spread_p95": 0.035269927233457565,
+        "channel_spread_p99": 0.0647026002407074,
+        "first": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_01e6c11cc57295bf016a4d0658fa30819bbd56b6fe94668ba2.png",
+        "first_bg": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "height": 1024,
+        "max_negative_ratio": 0.2,
+        "max_spread_max": 0.7,
+        "max_spread_p95": 0.28,
+        "max_spread_p99": 0.36,
+        "max_too_high_ratio": 0.0,
+        "negative_diff_ratio": 0.12633641560872397,
+        "opaque_pixels": 203075,
+        "out": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack-black-white.png",
+        "profile_pass": true,
+        "quality_profile": "game-sprite",
+        "quality_profile_report": {
+          "description": "Opt-in relaxed gate for generated game sprites, icon sheets, portrait packs, and VFX frames where Codex reference generation preserves layout but changes edge/background pixels. Requires visual QA before demos are copied.",
+          "max_negative_ratio": 0.2,
+          "max_spread_max": 0.7,
+          "max_spread_p95": 0.28,
+          "max_spread_p99": 0.36,
+          "max_too_high_ratio": 0.0,
+          "name": "game-sprite",
+          "requires_visual_qa": true,
+          "snap_alpha_below": 40,
+          "thresholds": {
+            "max_negative_ratio": 0.2,
+            "max_spread_max": 0.7,
+            "max_spread_p95": 0.28,
+            "max_spread_p99": 0.36,
+            "max_too_high_ratio": 0.0
+          }
+        },
+        "second": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_03c5197049a226f9016a4d06aae1848191bf00c1f7f028a76e.png",
+        "second_bg": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "semi_transparent_pixels": 979941,
+        "snap_alpha_below": 40,
+        "strict_pass": true,
+        "too_high_diff_ratio": 0.0,
+        "transparent_pixels": 389848,
+        "width": 1536
+      },
+      "returncode": 0,
+      "stderr": "",
+      "strict_pass": true
+    }
+  ],
+  "commands": {
+    "black_white": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/alpha_from_background_pair.py",
+      "--candidate-name",
+      "black-white",
+      "--first",
+      "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_01e6c11cc57295bf016a4d0658fa30819bbd56b6fe94668ba2.png",
+      "--second",
+      "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_03c5197049a226f9016a4d06aae1848191bf00c1f7f028a76e.png",
+      "--first-bg",
+      "#000000",
+      "--second-bg",
+      "#ffffff",
+      "--out",
+      "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack-black-white.png",
+      "--quality-profile",
+      "game-sprite",
+      "--max-spread-p95",
+      "0.28",
+      "--max-spread-p99",
+      "0.36",
+      "--max-spread-max",
+      "0.7",
+      "--max-negative-ratio",
+      "0.2",
+      "--max-too-high-ratio",
+      "0.0",
+      "--json"
+    ],
+    "export_webp": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/export_image.py",
+      "--input",
+      "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.png",
+      "--format",
+      "webp",
+      "--out",
+      "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.webp",
+      "--preserve-alpha",
+      "--lossless",
+      "--json"
+    ],
+    "verify_png": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/verify_alpha.py",
+      "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.png",
+      "--json"
+    ],
+    "verify_webp": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/verify_alpha.py",
+      "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.webp",
+      "--json"
+    ]
+  },
+  "demo_id": "dialogue-avatar-portrait-pack",
+  "export_webp": {
+    "report": {
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "flattened": false,
+      "format": "webp",
+      "input": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.png",
+      "lossless": true,
+      "out": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.webp",
+      "preserve_alpha": true,
+      "quality": 95,
+      "source_has_alpha": true,
+      "source_mode": "RGBA"
+    },
+    "returncode": 0,
+    "stderr": ""
+  },
+  "final_paths": {
+    "black": "/Users/vid/generate-transparent-image-skill/examples/pairs/dialogue-avatar-portrait-pack-black.png",
+    "green": "/Users/vid/generate-transparent-image-skill/examples/pairs/dialogue-avatar-portrait-pack-green.png",
+    "png": "/Users/vid/generate-transparent-image-skill/examples/transparent/dialogue-avatar-portrait-pack.png",
+    "report": "/Users/vid/generate-transparent-image-skill/examples/reports/dialogue-avatar-portrait-pack.json",
+    "webp": "/Users/vid/generate-transparent-image-skill/examples/transparent/dialogue-avatar-portrait-pack.webp",
+    "white": "/Users/vid/generate-transparent-image-skill/examples/pairs/dialogue-avatar-portrait-pack-white.png"
+  },
+  "green": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_0bbfabf99c666794016a4d0700349081958ee6e12655ef867d.png",
+  "height": 1024,
+  "max_negative_ratio": 0.2,
+  "quality_profile": "game-sprite",
+  "quality_profile_report": {
+    "description": "Opt-in relaxed gate for generated game sprites, icon sheets, portrait packs, and VFX frames where Codex reference generation preserves layout but changes edge/background pixels. Requires visual QA before demos are copied.",
+    "max_negative_ratio": 0.2,
+    "max_spread_max": 0.7,
+    "max_spread_p95": 0.28,
+    "max_spread_p99": 0.36,
+    "max_too_high_ratio": 0.0,
+    "name": "game-sprite",
+    "requires_visual_qa": true,
+    "snap_alpha_below": 40,
+    "thresholds": {
+      "max_negative_ratio": 0.2,
+      "max_spread_max": 0.7,
+      "max_spread_p95": 0.28,
+      "max_spread_p99": 0.36,
+      "max_too_high_ratio": 0.0
+    }
+  },
+  "selected_candidate": "black-white",
+  "selection_rule": "Selected the passing candidate with the lowest negative_diff_ratio.",
+  "stage_png": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.png",
+  "stage_webp": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.webp",
+  "status": "passed-relaxed-visual-qa",
+  "verify_png": {
+    "report": {
+      "alpha_max": 255,
+      "alpha_min": 0,
+      "format": "PNG",
+      "fully_opaque_pixels": 176594,
+      "fully_transparent_pixels": 745493,
+      "has_alpha": true,
+      "height": 1024,
+      "mode": "RGBA",
+      "path": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.png",
+      "semi_transparent_pixels": 650777,
+      "semi_transparent_ratio": 0.41375287373860675,
+      "transparent_pixels": 1396270,
+      "transparent_ratio": 0.8877245585123698,
+      "width": 1536
+    },
+    "returncode": 0,
+    "stderr": ""
+  },
+  "verify_webp": {
+    "report": {
+      "alpha_max": 255,
+      "alpha_min": 0,
+      "format": "WEBP",
+      "fully_opaque_pixels": 176594,
+      "fully_transparent_pixels": 745493,
+      "has_alpha": true,
+      "height": 1024,
+      "mode": "RGBA",
+      "path": "/tmp/alphakit-add-demo-dialogue-avatar-portrait-pack/dialogue-avatar-portrait-pack.webp",
+      "semi_transparent_pixels": 650777,
+      "semi_transparent_ratio": 0.41375287373860675,
+      "transparent_pixels": 1396270,
+      "transparent_ratio": 0.8877245585123698,
+      "width": 1536
+    },
+    "returncode": 0,
+    "stderr": ""
+  },
+  "visual_qa_note": "Accepted game-sprite visual QA: portrait cutouts remain readable on checker, white, and dark backgrounds with normal illustration edge softness.",
+  "visual_qa_passed": true,
+  "visual_qa_required": true,
+  "white": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_03c5197049a226f9016a4d06aae1848191bf00c1f7f028a76e.png",
+  "width": 1536
+}
