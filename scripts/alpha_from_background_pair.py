@@ -27,25 +27,43 @@ def require_deps():
     return np, Image, ImageFilter
 
 
+def parse_color(value: str):
+    value = value.strip().lower()
+    if value.startswith("#") and len(value) == 7:
+        return tuple(int(value[index : index + 2], 16) / 255.0 for index in (1, 3, 5))
+    parts = [part.strip() for part in value.split(",")]
+    if len(parts) == 3:
+        return tuple(max(0, min(255, int(part))) / 255.0 for part in parts)
+    raise argparse.ArgumentTypeError("Use #RRGGBB or r,g,b.")
+
+
 def load_rgb(path: Path):
     np, Image, _ImageFilter = require_deps()
     image = Image.open(path).convert("RGB")
     return image, np.asarray(image, dtype=np.float32) / 255.0
 
 
-def extract_rgba_arrays(black_rgb, white_rgb):
+def extract_rgba_arrays(first_rgb, second_rgb, first_bg, second_bg):
     np, _Image, _ImageFilter = require_deps()
-    diff = white_rgb - black_rgb
-    alpha_channels = 1.0 - diff
+    first_bg = np.asarray(first_bg, dtype=np.float32)
+    second_bg = np.asarray(second_bg, dtype=np.float32)
+    denom = second_bg - first_bg
+    used_channels = np.abs(denom) > (1.0 / 255.0)
+    if not bool(np.any(used_channels)):
+        raise SystemExit("Background colors must differ in at least one RGB channel.")
+
+    diff = second_rgb - first_rgb
+    normalized_diff = diff[..., used_channels] / denom[used_channels]
+    alpha_channels = 1.0 - normalized_diff
     alpha = np.clip(np.median(alpha_channels, axis=2), 0.0, 1.0)
 
-    rgba_rgb = np.zeros_like(black_rgb)
+    rgba_rgb = np.zeros_like(first_rgb)
     mask = alpha > 1.0 / 255.0
-    rgba_rgb[mask] = black_rgb[mask] / alpha[mask, None]
+    rgba_rgb[mask] = (first_rgb[mask] - (1.0 - alpha[mask, None]) * first_bg) / alpha[mask, None]
     rgba_rgb = np.clip(rgba_rgb, 0.0, 1.0)
 
-    channel_spread = np.std(alpha_channels, axis=2)
-    return rgba_rgb, alpha, channel_spread
+    channel_spread = np.std(alpha_channels, axis=2) if alpha_channels.shape[2] > 1 else np.zeros_like(alpha)
+    return rgba_rgb, alpha, channel_spread, normalized_diff, used_channels
 
 
 def save_rgba(rgb, alpha, out_path: Path, feather: float = 0.0, snap_alpha_below: int = 0):
@@ -66,17 +84,16 @@ def save_rgba(rgb, alpha, out_path: Path, feather: float = 0.0, snap_alpha_below
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     suffix = out_path.suffix.lower()
-
     if suffix == ".webp":
         image.save(out_path, format="WEBP", lossless=True, quality=100, method=6)
     else:
         image.save(out_path, format="PNG")
 
 
-def summarize(alpha, spread, diff):
+def summarize(alpha, spread, normalized_diff, used_channels):
     np, _Image, _ImageFilter = require_deps()
-    negative_diff = diff < -(1.0 / 255.0)
-    too_high_diff = diff > (1.0 + 1.0 / 255.0)
+    negative_diff = normalized_diff < -(1.0 / 255.0)
+    too_high_diff = normalized_diff > (1.0 + 1.0 / 255.0)
     return {
         "alpha_min": float(alpha.min()),
         "alpha_max": float(alpha.max()),
@@ -89,54 +106,34 @@ def summarize(alpha, spread, diff):
         "channel_spread_max": float(spread.max()),
         "negative_diff_ratio": float(np.any(negative_diff, axis=2).mean()),
         "too_high_diff_ratio": float(np.any(too_high_diff, axis=2).mean()),
+        "alpha_channel_count": int(np.asarray(used_channels).sum()),
     }
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Extract true alpha from aligned pure-black and pure-white composites."
+        description="Extract true alpha from two aligned composites over known solid backgrounds."
     )
-    parser.add_argument("--black", required=True, type=Path, help="Image composited over #000000.")
-    parser.add_argument("--white", required=True, type=Path, help="Image composited over #ffffff.")
+    parser.add_argument("--first", required=True, type=Path)
+    parser.add_argument("--second", required=True, type=Path)
+    parser.add_argument("--first-bg", required=True, type=parse_color)
+    parser.add_argument("--second-bg", required=True, type=parse_color)
+    parser.add_argument("--candidate-name", default="background-pair")
     parser.add_argument("--out", required=True, type=Path, help="Output PNG or WebP with alpha.")
     parser.add_argument("--feather", type=float, default=0.0, help="Optional alpha blur radius.")
     parser.add_argument("--quality-profile", choices=profile_names(), default="strict")
-    parser.add_argument(
-        "--max-spread-p95",
-        type=float,
-        help="Fail if p95 channel inconsistency exceeds this value.",
-    )
-    parser.add_argument(
-        "--max-spread-p99",
-        type=float,
-        help="Fail if p99 channel inconsistency exceeds this value.",
-    )
-    parser.add_argument(
-        "--max-spread-max",
-        type=float,
-        help="Fail if maximum channel inconsistency exceeds this value.",
-    )
-    parser.add_argument(
-        "--max-negative-ratio",
-        type=float,
-        help="Fail if this ratio of pixels has white darker than black.",
-    )
-    parser.add_argument(
-        "--max-too-high-ratio",
-        type=float,
-        help="Fail if this ratio of pixels has white brighter than the model allows.",
-    )
+    parser.add_argument("--max-spread-p95", type=float)
+    parser.add_argument("--max-spread-p99", type=float)
+    parser.add_argument("--max-spread-max", type=float)
+    parser.add_argument("--max-negative-ratio", type=float)
+    parser.add_argument("--max-too-high-ratio", type=float)
     parser.add_argument(
         "--snap-alpha-below",
         type=int,
         help="Set pixels with alpha at or below this 0-255 value to fully transparent.",
     )
-    parser.add_argument(
-        "--no-strict",
-        action="store_true",
-        help="Write output even when the pair appears inconsistent or misaligned.",
-    )
-    parser.add_argument("--json", action="store_true", help="Print JSON report.")
+    parser.add_argument("--no-strict", action="store_true")
+    parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     thresholds = resolve_thresholds(
         profile_name=args.quality_profile,
@@ -148,26 +145,30 @@ def main() -> int:
     )
     snap_alpha_below = resolve_snap_alpha_below(args.quality_profile, args.snap_alpha_below)
 
-    black_image, black_rgb = load_rgb(args.black)
-    white_image, white_rgb = load_rgb(args.white)
+    first_image, first_rgb = load_rgb(args.first)
+    second_image, second_rgb = load_rgb(args.second)
 
-    if black_image.size != white_image.size:
+    if first_image.size != second_image.size:
         raise SystemExit(
-            f"Input dimensions differ: black={black_image.size}, white={white_image.size}. "
+            f"Input dimensions differ: first={first_image.size}, second={second_image.size}. "
             "Aligned extraction requires identical dimensions."
         )
 
-    diff = white_rgb - black_rgb
-    rgb, alpha, spread = extract_rgba_arrays(black_rgb, white_rgb)
-    report = summarize(alpha, spread, diff)
+    rgb, alpha, spread, normalized_diff, used_channels = extract_rgba_arrays(
+        first_rgb, second_rgb, args.first_bg, args.second_bg
+    )
+    report = summarize(alpha, spread, normalized_diff, used_channels)
     profile_pass = passes_thresholds(report, thresholds)
     report.update(
         {
-            "black": str(args.black),
-            "white": str(args.white),
+            "candidate_name": args.candidate_name,
+            "first": str(args.first),
+            "second": str(args.second),
+            "first_bg": args.first_bg,
+            "second_bg": args.second_bg,
             "out": str(args.out),
-            "width": black_image.width,
-            "height": black_image.height,
+            "width": first_image.width,
+            "height": first_image.height,
             "quality_profile": args.quality_profile,
             "quality_profile_report": profile_report(args.quality_profile, thresholds),
             "profile_pass": profile_pass,
@@ -185,8 +186,9 @@ def main() -> int:
         if args.json:
             print(json.dumps(report, indent=2, sort_keys=True))
         raise SystemExit(
-            "Black/white pair appears inconsistent or misaligned "
-            f"(profile={args.quality_profile}, "
+            "Background pair appears inconsistent or misaligned "
+            f"(candidate={args.candidate_name}, "
+            f"profile={args.quality_profile}, "
             f"p99={report['channel_spread_p99']:.4f}, "
             f"max={report['channel_spread_max']:.4f}, "
             f"negative_diff_ratio={report['negative_diff_ratio']:.4f}). "
