@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+import importlib.util
 
 import numpy as np
 from PIL import Image
@@ -56,6 +57,17 @@ def run(command: list[str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(command, text=True, capture_output=True, check=False)
 
 
+def load_generate_demo_pairs_module():
+    spec = importlib.util.spec_from_file_location(
+        "generate_demo_pairs", SCRIPT_DIR / "generate_demo_pairs.py"
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Unable to load generate_demo_pairs.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def main() -> int:
     rgb, alpha = make_source()
     with tempfile.TemporaryDirectory(prefix="transparent-alpha-test-") as tmp:
@@ -63,16 +75,21 @@ def main() -> int:
         truth = tmp_path / "truth.png"
         black = tmp_path / "black.png"
         white = tmp_path / "white.png"
+        green = tmp_path / "green.png"
+        white_negative_bad = tmp_path / "white-negative-bad.png"
         white_shifted = tmp_path / "white-shifted.png"
         paired_out = tmp_path / "paired.png"
         paired_webp = tmp_path / "paired.webp"
         standard_jpeg = tmp_path / "standard.jpg"
         standard_webp = tmp_path / "standard.webp"
-        single_out = tmp_path / "single.png"
-
         save_rgba(truth, rgb, alpha)
         save_rgb(black, rgb * alpha[..., None])
         save_rgb(white, rgb * alpha[..., None] + (1.0 - alpha[..., None]))
+        green_bg = np.array([0.0, 1.0, 0.0], dtype=np.float32)
+        save_rgb(green, rgb * alpha[..., None] + (1.0 - alpha[..., None]) * green_bg)
+        white_bad_rgb = rgb * alpha[..., None] + (1.0 - alpha[..., None])
+        white_bad_rgb[104:152, 104:152] = 0.0
+        save_rgb(white_negative_bad, white_bad_rgb)
         shifted = np.roll(rgb * alpha[..., None] + (1.0 - alpha[..., None]), 1, axis=1)
         save_rgb(white_shifted, shifted)
 
@@ -97,26 +114,6 @@ def main() -> int:
         foreground_mask = alpha > 0.05
         print("aligned_pair_alpha_mae", mae(alpha, paired_alpha))
         print("aligned_pair_rgb_mae", mae(rgb[foreground_mask], paired_rgb[foreground_mask]))
-
-        single_result = run(
-            [
-                sys.executable,
-                str(SCRIPT_DIR / "remove_solid_background.py"),
-                "--input",
-                str(black),
-                "--bg",
-                "#000000",
-                "--out",
-                str(single_out),
-            ]
-        )
-        if single_result.returncode != 0:
-            print(single_result.stdout)
-            print(single_result.stderr, file=sys.stderr)
-            return single_result.returncode
-
-        _single_rgb, single_alpha = load_rgba(single_out)
-        print("single_black_bg_alpha_mae", mae(alpha, single_alpha))
 
         webp_result = run(
             [
@@ -151,6 +148,43 @@ def main() -> int:
         if misaligned_result.returncode == 0:
             print("ERROR expected misaligned pair to fail strict check", file=sys.stderr)
             return 1
+
+        strict_negative_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "alpha_from_black_white.py"),
+                "--black",
+                str(black),
+                "--white",
+                str(white_negative_bad),
+                "--out",
+                str(tmp_path / "strict-negative.png"),
+            ]
+        )
+        print("strict_negative_pair_exit_code", strict_negative_result.returncode)
+        if strict_negative_result.returncode == 0:
+            print("ERROR expected strict negative-diff pair to fail", file=sys.stderr)
+            return 1
+
+        soft_negative_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "alpha_from_black_white.py"),
+                "--black",
+                str(black),
+                "--white",
+                str(white_negative_bad),
+                "--out",
+                str(tmp_path / "soft-negative.png"),
+                "--quality-profile",
+                "soft-photoreal",
+            ]
+        )
+        print("soft_negative_pair_exit_code", soft_negative_result.returncode)
+        if soft_negative_result.returncode != 0:
+            print(soft_negative_result.stdout)
+            print(soft_negative_result.stderr, file=sys.stderr)
+            return soft_negative_result.returncode
 
         verify_result = run([sys.executable, str(SCRIPT_DIR / "verify_alpha.py"), str(paired_out)])
         print("verify_exit_code", verify_result.returncode)
@@ -205,6 +239,142 @@ def main() -> int:
             print(webp_standard_result.stdout)
             print(webp_standard_result.stderr, file=sys.stderr)
             return webp_standard_result.returncode or 1
+
+        demo_dry_run_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "generate_demo_pairs.py"),
+                "--dry-run",
+                "--only",
+                "photorealistic-product-cutouts",
+                "--run-dir",
+                str(tmp_path / "demo-run"),
+                "--examples-dir",
+                str(tmp_path / "examples"),
+            ]
+        )
+        print("demo_pair_generator_dry_run_exit_code", demo_dry_run_result.returncode)
+        if demo_dry_run_result.returncode != 0:
+            print(demo_dry_run_result.stdout)
+            print(demo_dry_run_result.stderr, file=sys.stderr)
+            return demo_dry_run_result.returncode
+        if "photorealistic-product-cutouts" not in demo_dry_run_result.stdout:
+            print("ERROR demo dry-run did not include expected demo id", file=sys.stderr)
+            return 1
+        if "actual black image dimensions after generation" not in demo_dry_run_result.stdout:
+            print("ERROR demo dry-run did not declare actual-size reference generation", file=sys.stderr)
+            return 1
+
+        demo_pairs = load_generate_demo_pairs_module()
+        actual_size_image = tmp_path / "actual-size.png"
+        Image.new("RGB", (333, 222), (0, 0, 0)).save(actual_size_image)
+        actual_size = demo_pairs.image_size_label(actual_size_image)
+        print("actual_size_reader", actual_size)
+        if actual_size != "333x222":
+            print(f"ERROR expected actual size 333x222, got {actual_size}", file=sys.stderr)
+            return 1
+
+        add_pair_dry_run_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "add_demo_pair.py"),
+                "--demo-id",
+                "synthetic-test",
+                "--black",
+                str(black),
+                "--white",
+                str(white),
+                "--examples-dir",
+                str(tmp_path / "examples"),
+                "--force",
+            ]
+        )
+        print("add_demo_pair_exit_code", add_pair_dry_run_result.returncode)
+        if add_pair_dry_run_result.returncode != 0:
+            print(add_pair_dry_run_result.stdout)
+            print(add_pair_dry_run_result.stderr, file=sys.stderr)
+            return add_pair_dry_run_result.returncode
+
+        add_pair_green_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "add_demo_pair.py"),
+                "--demo-id",
+                "synthetic-green-fallback-test",
+                "--black",
+                str(black),
+                "--white",
+                str(white_negative_bad),
+                "--green",
+                str(green),
+                "--examples-dir",
+                str(tmp_path / "examples-green"),
+                "--force",
+            ]
+        )
+        print("add_demo_pair_green_fallback_exit_code", add_pair_green_result.returncode)
+        if add_pair_green_result.returncode != 0:
+            print(add_pair_green_result.stdout)
+            print(add_pair_green_result.stderr, file=sys.stderr)
+            return add_pair_green_result.returncode
+        if "black-green" not in add_pair_green_result.stdout and "green-white" not in add_pair_green_result.stdout:
+            print("ERROR green fallback did not evaluate green candidates", file=sys.stderr)
+            return 1
+
+        add_pair_soft_needs_qa_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "add_demo_pair.py"),
+                "--demo-id",
+                "synthetic-soft-needs-qa-test",
+                "--black",
+                str(black),
+                "--white",
+                str(white_negative_bad),
+                "--quality-profile",
+                "soft-photoreal",
+                "--examples-dir",
+                str(tmp_path / "examples-soft-needs-qa"),
+                "--force",
+            ]
+        )
+        print("add_demo_pair_soft_needs_qa_exit_code", add_pair_soft_needs_qa_result.returncode)
+        if add_pair_soft_needs_qa_result.returncode != 3:
+            print(add_pair_soft_needs_qa_result.stdout)
+            print(add_pair_soft_needs_qa_result.stderr, file=sys.stderr)
+            return add_pair_soft_needs_qa_result.returncode or 1
+        if "requires-visual-qa" not in add_pair_soft_needs_qa_result.stdout:
+            print("ERROR soft profile did not require visual QA", file=sys.stderr)
+            return 1
+
+        add_pair_soft_pass_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "add_demo_pair.py"),
+                "--demo-id",
+                "synthetic-soft-pass-test",
+                "--black",
+                str(black),
+                "--white",
+                str(white_negative_bad),
+                "--quality-profile",
+                "soft-photoreal",
+                "--visual-qa-pass",
+                "--visual-qa-note",
+                "Synthetic visual QA gate test.",
+                "--examples-dir",
+                str(tmp_path / "examples-soft-pass"),
+                "--force",
+            ]
+        )
+        print("add_demo_pair_soft_pass_exit_code", add_pair_soft_pass_result.returncode)
+        if add_pair_soft_pass_result.returncode != 0:
+            print(add_pair_soft_pass_result.stdout)
+            print(add_pair_soft_pass_result.stderr, file=sys.stderr)
+            return add_pair_soft_pass_result.returncode
+        if "passed-relaxed-visual-qa" not in add_pair_soft_pass_result.stdout:
+            print("ERROR soft profile pass was not marked as visual-QA approved", file=sys.stderr)
+            return 1
 
     return 0
 

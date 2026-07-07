@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "demos": [
+    {
+      "id": "photorealistic-product-cutouts",
+      "title": "Photorealistic Product Cutouts",
+      "size": "1536x1024",
+      "prompt": "Five premium skincare containers arranged as separate isolated products: clear glass serum bottle with dropper, frosted cream jar, brushed aluminum pump bottle, slim translucent toner bottle, and small capped vial. Photorealistic ecommerce studio product photography, premium materials, realistic glass refraction and metal highlights, no labels, no logos, no text, no watermark. Centered group with generous padding around every product, all products fully visible, no crop."
+    },
+    {
+      "id": "photorealistic-human-model-cutouts",
+      "title": "Photorealistic Human Model Cutouts",
+      "size": "1536x1024",
+      "prompt": "Six generic adult people as full-body photorealistic cutout subjects, diverse outfits and poses, realistic hair edges and fabric detail, no celebrities, no logos, no text, no watermark. Each person fully visible with clear spacing and generous padding, neutral standing poses, ecommerce-ready isolation."
+    },
+    {
+      "id": "fashion-model-catalog-cutouts",
+      "title": "Fashion Model Catalog Cutouts",
+      "size": "1536x1024",
+      "prompt": "Four generic adult fashion catalog models wearing unbranded streetwear, front three-quarter poses, realistic skin texture, fabric folds, and shoes fully visible. Photorealistic ecommerce catalog styling, no logos, no text, no watermark. Clean spacing between models and generous padding around the group."
+    },
+    {
+      "id": "hair-alpha-stress-test",
+      "title": "Hair Alpha Stress Test",
+      "size": "1024x1024",
+      "prompt": "One generic adult portrait cutout subject with detailed curly hair and flyaway strands, shoulders-up composition, photorealistic studio lighting, realistic skin texture, clean silhouette, no jewelry logos, no text, no watermark. Generous padding around hair, hair strands clearly visible against the background."
+    },
+    {
+      "id": "web-animation-sprite-strip",
+      "title": "Web Animation Sprite Strip",
+      "size": "1536x1024",
+      "prompt": "A website hero animation sprite strip with 12 horizontal frames showing a premium glassmorphism CTA badge assembling from soft particles into a sharp button shape. Consistent center alignment in every frame, frame-to-frame motion continuity, no page mockup, no readable text, no watermark, no frame border."
+    },
+    {
+      "id": "game-asset-pack",
+      "title": "Game Asset Pack",
+      "size": "1024x1024",
+      "prompt": "A game asset sheet in an 8 by 8 grid of readable top-down fantasy RPG items: potions, coins, keys, gems, crates, scrolls, hearts, and spell projectiles. Consistent camera angle, polished game art, readable silhouettes, no text, no logos, no watermark, no cell borders."
+    },
+    {
+      "id": "game-avatar-sprite-sheet",
+      "title": "Game Avatar Sprite Sheet",
+      "size": "1536x1024",
+      "prompt": "One original non-celebrity game avatar sprite sheet, 8 columns by 6 rows, idle, walk, run, jump, attack, and hurt animation frames. Consistent proportions and outfit across all frames, polished readable game art, no copyrighted characters, no text, no logos, no watermark, no cell borders."
+    },
+    {
+      "id": "dialogue-avatar-portrait-pack",
+      "title": "Dialogue Avatar Portrait Pack",
+      "size": "1536x1024",
+      "prompt": "A dialogue avatar portrait pack with 12 original non-celebrity game character bust portraits, consistent art direction, varied expressions, clean silhouettes, readable at small size, no copyrighted characters, no text, no logos, no watermark, no UI frames."
+    },
+    {
+      "id": "game-vfx-frames",
+      "title": "Game VFX Frames",
+      "size": "1536x1024",
+      "prompt": "A game VFX sprite sheet with 16 frames in a single row, a fire-to-magic impact burst expanding then fading, consistent origin point, no camera movement, bright core, smoke wisps, readable frame progression, no text, no logos, no watermark, no frame border."
+    }
+  ]
+}
