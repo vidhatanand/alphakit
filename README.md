@@ -2,11 +2,12 @@
 
 Codex skill for generating, exporting, extracting, and verifying standard or transparent image assets.
 
-Alphakit is built for practical asset work: prompt-to-image output, PNG/JPEG/WebP conversion, alpha-channel verification, black/white extraction, and background removal checks.
+Alphakit is built for practical asset work: Codex image generation, PNG/JPEG/WebP conversion, alpha-channel verification, black/white extraction, and background removal checks.
 
 It supports:
 
 - standard image generation/export to PNG, JPEG, or WebP
+- Codex image generation as the source-image generator for prompt-to-image work
 - verifying whether a PNG/WebP has a real alpha channel
 - extracting alpha from aligned black-background and white-background image pairs
 - approximate single-solid-background removal
@@ -56,6 +57,8 @@ Use $alphakit to remove the background from this image and verify the PNG has re
 ```
 
 If you do not specify `PNG`, `JPEG`, or `WebP`, Alphakit instructs Codex to ask for the needed output format before generating or exporting.
+
+For prompt-to-image requests, Alphakit uses Codex image generation first, then applies its own scripts for transparency extraction, export, and alpha verification. Generated source files and processed outputs should be kept separate so the workflow is auditable.
 
 ## Verified Demo Assets
 
