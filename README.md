@@ -2,17 +2,16 @@
 
 Codex skill for generating, exporting, extracting, and verifying standard or transparent image assets.
 
-Alphakit is built for practical asset work: Codex image generation, PNG/JPEG/WebP conversion, alpha-channel verification, black/white extraction, and background removal checks.
+Alphakit is built for practical asset work: Codex image generation, PNG/JPEG/WebP conversion, alpha-channel verification, and black/white extraction.
 
 It supports:
 
 - standard image generation/export to PNG, JPEG, or WebP
 - Codex image generation as the source-image generator for prompt-to-image work
 - verifying whether a PNG/WebP has a real alpha channel
-- extracting alpha from aligned black-background and white-background image pairs
-- approximate single-solid-background removal
-- reproducible transparent example assets with prompts
-- synthetic self-tests that compare method quality and reject misaligned pairs
+- extracting alpha from aligned black/white pairs, with a controlled green third-background candidate
+- strict and opt-in `soft-photoreal` quality profiles for hair, shadows, glass, smoke, and other soft alpha edges
+- self-tests that verify black/white extraction and reject misaligned pairs
 
 ## Install
 
@@ -56,31 +55,91 @@ For an existing image:
 Use $alphakit to remove the background from this image and verify the PNG has real transparency.
 ```
 
-If you do not specify `PNG`, `JPEG`, or `WebP`, Alphakit instructs Codex to ask for the needed output format before generating or exporting.
+If you do not specify `PNG`, `JPEG`, or `WebP`, Alphakit defaults to a true transparent PNG. If you explicitly ask for a standard or opaque image without naming a format, it exports an opaque PNG.
 
-For prompt-to-image requests, Alphakit uses Codex image generation first, then applies its own scripts for transparency extraction, export, and alpha verification. Generated source files and processed outputs should be kept separate so the workflow is auditable.
+For prompt-to-image requests, Alphakit uses Codex image generation first, then creates an aligned black/white pair and applies `scripts/alpha_from_black_white.py` for transparency extraction, export, and alpha verification. Generated source files and processed outputs should be kept separate so the workflow is auditable.
 
-## Verified Demo Assets
+## Demo Assets
 
-The `examples/transparent/` folder contains verified transparent PNG assets and lossless WebP exports. Each example includes the source prompt in `examples/prompts.json`.
+Committed demo assets must use the black/white pair workflow:
 
-This folder intentionally avoids procedural fake-photoreal placeholders. Photorealistic humans, models, products, and catalog cutouts are covered as prompt recipes below so real image-generation output can be verified instead of represented by weak synthetic stand-ins.
+1. Generate the black-background source with Codex image generation.
+2. Read the black image's actual pixel dimensions.
+3. Generate the white image with the black image as reference input, requesting the actual black-image size and changing only the background to white.
+4. Run `scripts/add_demo_pair.py`.
+5. If black/white fails because `negative_diff_ratio` exceeds threshold, generate a green-background third image from the black image reference and rerun `scripts/add_demo_pair.py --green`.
+6. Verify the PNG/WebP with `scripts/verify_alpha.py`.
+7. For `--quality-profile soft-photoreal`, inspect the staged output and rerun with `--visual-qa-pass` only if you accept the visible edge/noise tradeoff.
 
-| Asset | Type | Prompt |
-| --- | --- | --- |
-| ![Icon sprite sheet](examples/transparent/icon-sprite-sheet.png) | Icon sprite sheet | `A compact transparent PNG sprite sheet with four polished app icons: sparkle, shield, lightning bolt, and cursor pointer, crisp vector-like edges, no background.` |
-| ![Glass navigation element](examples/transparent/glass-navigation-element.png) | Web page design element | `A transparent PNG website navigation component with frosted glass pill, subtle border, tab indicators, and no page background.` |
-| ![Launch badge](examples/transparent/launch-badge.png) | Badge / sticker | `A transparent PNG launch badge for a modern AI tool, layered sticker shape, subtle shadow, clean edges, no background.` |
-| ![Bird over globe](examples/transparent/bird-over-globe-100km.png) | Transparent illustration | `A stylized bird flying above a globe at 100 km altitude, clean editorial illustration, isolated subject, pure transparent background.` |
-| ![Hero swoosh divider](examples/transparent/hero-swoosh-divider.png) | Web page design element | `A transparent PNG hero-section swoosh divider with layered teal, coral, and ink ribbons, soft highlights, no background.` |
-| ![Web animation button glint](examples/transparent/web-animation-button-glint.png) | Web animation sprite strip | `A transparent PNG sprite strip for a website CTA hover animation: eight frames of a frosted button glint, glow pulse, and clean alpha edges.` |
-| ![Web animation particle burst](examples/transparent/web-animation-particle-burst.png) | Web animation sprite strip | `A transparent PNG sprite strip for a webpage success animation: eight frames of colorful particles expanding outward, clean alpha, no background.` |
-| ![Game platformer asset sheet](examples/transparent/game-platformer-assets.png) | Game assets | `A transparent PNG game asset sprite sheet for a platformer: player idle frames, coins, crates, and collectible stars, crisp edges, no background.` |
-| ![Game effects sprite sheet](examples/transparent/game-effects-sprite-sheet.png) | Game assets | `A transparent PNG game effects sprite sheet with eight explosion and magic-burst frames, smoke puffs, bright highlights, clean alpha, no background.` |
+Do not commit procedural demos, chroma-key demos, or single-background-removal demos.
+
+Accepted demos:
+
+| Demo | PNG | WebP | Profile | Selected Candidate | Report |
+| --- | --- | --- | --- | --- | --- |
+| Photorealistic product cutouts | ![Photorealistic product cutouts](examples/transparent/photorealistic-product-cutouts.png) | [WebP](examples/transparent/photorealistic-product-cutouts.webp) | `strict` | `black-green` | [report](examples/reports/photorealistic-product-cutouts.json) |
+| Photorealistic human/model cutouts | ![Photorealistic human model cutouts](examples/transparent/photorealistic-human-model-cutouts.png) | [WebP](examples/transparent/photorealistic-human-model-cutouts.webp) | `soft-photoreal` + user visual QA | `black-white` | [report](examples/reports/photorealistic-human-model-cutouts.json) |
+| Hair alpha stress test | ![Hair alpha stress test](examples/transparent/hair-alpha-stress-test.png) | [WebP](examples/transparent/hair-alpha-stress-test.webp) | `soft-photoreal` + user visual QA | `black-green` | [report](examples/reports/hair-alpha-stress-test.json) |
+| Web animation sprite strip | ![Web animation sprite strip](examples/transparent/web-animation-sprite-strip.png) | [WebP](examples/transparent/web-animation-sprite-strip.webp) | `soft-photoreal` + user visual QA | `black-white` | [report](examples/reports/web-animation-sprite-strip.json) |
+
+Generate demo candidates:
+
+```bash
+Use Codex imagegen to create the black image, then use Codex imagegen again with the black image as reference input to create the white image at the black file's actual size.
+```
+
+After each pair is generated, validate and copy it with:
+
+```bash
+python3 scripts/add_demo_pair.py \
+  --demo-id photorealistic-product-cutouts \
+  --black /path/to/demo-black.png \
+  --white /path/to/demo-white.png \
+  --force
+```
+
+Green fallback, only after the black/white report shows `negative_diff_ratio` above threshold:
+
+```bash
+python3 scripts/add_demo_pair.py \
+  --demo-id photorealistic-product-cutouts \
+  --black /path/to/demo-black.png \
+  --white /path/to/demo-white.png \
+  --green /path/to/demo-green.png \
+  --force
+```
+
+For hair, shadows, glass, smoke, or photoreal soft edges, use the relaxed profile only when you accept possible artifacts:
+
+```bash
+python3 scripts/add_demo_pair.py \
+  --demo-id hair-alpha-stress-test \
+  --black /path/to/demo-black.png \
+  --white /path/to/demo-white.png \
+  --green /path/to/demo-green.png \
+  --quality-profile soft-photoreal \
+  --force
+```
+
+That command stages a PNG/WebP and stops with `requires-visual-qa`. After inspecting the staged output, copy it into `examples/` only with:
+
+```bash
+python3 scripts/add_demo_pair.py \
+  --demo-id hair-alpha-stress-test \
+  --black /path/to/demo-black.png \
+  --white /path/to/demo-white.png \
+  --green /path/to/demo-green.png \
+  --quality-profile soft-photoreal \
+  --visual-qa-pass \
+  --visual-qa-note "Accepted after visual QA." \
+  --force
+```
+
+The validator copies only passing demos into `examples/pairs/`, `examples/transparent/`, and `examples/reports/`. It does not require `OPENAI_API_KEY`. If Codex imagegen is not installed or not available in the current Codex session, stop and warn instead of using API-backed generation.
 
 ## Advanced Prompt Recipes, Not Demo Assets
 
-Use these prompts with Alphakit when you want production-grade transparent assets. The assets above are deterministic demo files; the prompts below are written for real image generation workflows where Alphakit then verifies or extracts the final alpha.
+Use these prompts with Alphakit when you want production-grade transparent assets. The demo manifest in `examples/demo_prompts.json` mirrors these categories for the strict black/white pair generation workflow.
 
 ### Photorealistic Product Cutout Set
 
@@ -136,21 +195,7 @@ Use $alphakit to generate a transparent PNG dialogue avatar pack: 12 original ga
 Use $alphakit to generate a transparent PNG VFX sprite sheet: 16 frames in a single row, a fire-to-magic impact burst expanding then fading, consistent origin point, no camera movement, bright core, smoke wisps with semi-transparent alpha, no black background, no checkerboard. Verify the PNG/WebP alpha and reject the result if any frame is opaque.
 ```
 
-Regenerate the example set:
-
-```bash
-/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
-  scripts/build_examples.py
-```
-
-Verify every generated transparent PNG and WebP:
-
-```bash
-for image in examples/transparent/*.{png,webp}; do
-  /Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
-    scripts/verify_alpha.py "$image" >/dev/null
-done
-```
+When adding demos, include the black image, white image, final transparent PNG/WebP, prompt manifest, and extraction report.
 
 ## Export Standard Images
 
@@ -200,7 +245,9 @@ This only works when both source images have identical subject placement and for
 Expected result includes:
 
 - aligned black/white alpha extraction with very low error
-- single-background removal with higher error
 - misaligned black/white pair rejected
+- strict rejection plus `soft-photoreal` acceptance for a synthetic negative-diff case
+- relaxed demo import blocked until `--visual-qa-pass`
 - PNG and WebP alpha verification passing
 - standard JPEG and WebP export passing
+- demo pair generator dry-run passing

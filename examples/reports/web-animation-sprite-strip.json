@@ -1,0 +1,228 @@
+{
+  "black": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_0ae6c5d936e58a17016a4ce74f17a08194b2ac773499385b92.png",
+  "candidates": [
+    {
+      "name": "black-white",
+      "negative_diff_ratio": 0.0020688374837239585,
+      "out": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip-black-white.png",
+      "profile_pass": true,
+      "report": {
+        "alpha_channel_count": 3,
+        "alpha_max": 1.0,
+        "alpha_min": 0.0,
+        "candidate_name": "black-white",
+        "channel_spread_max": 0.15128424763679504,
+        "channel_spread_mean": 0.0029597121756523848,
+        "channel_spread_p95": 0.013330768793821335,
+        "channel_spread_p99": 0.0351242832839489,
+        "first": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_0ae6c5d936e58a17016a4ce74f17a08194b2ac773499385b92.png",
+        "first_bg": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "height": 1024,
+        "max_negative_ratio": 0.18,
+        "max_spread_max": 0.35,
+        "max_spread_p95": 0.18,
+        "max_spread_p99": 0.1,
+        "max_too_high_ratio": 0.0,
+        "negative_diff_ratio": 0.0020688374837239585,
+        "opaque_pixels": 3269,
+        "out": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip-black-white.png",
+        "profile_pass": true,
+        "quality_profile": "soft-photoreal",
+        "quality_profile_report": {
+          "description": "Opt-in relaxed gate for photoreal hair, soft shadows, glass, smoke, or other semitransparent edges. Requires visual QA before demos are copied.",
+          "max_negative_ratio": 0.18,
+          "max_spread_max": 0.35,
+          "max_spread_p95": 0.18,
+          "max_spread_p99": 0.1,
+          "max_too_high_ratio": 0.0,
+          "name": "soft-photoreal",
+          "requires_visual_qa": true,
+          "snap_alpha_below": 12,
+          "thresholds": {
+            "max_negative_ratio": 0.18,
+            "max_spread_max": 0.35,
+            "max_spread_p95": 0.18,
+            "max_spread_p99": 0.1,
+            "max_too_high_ratio": 0.0
+          }
+        },
+        "second": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_0906b19802978314016a4ce79598c48191b159d17cfceb1bc1.png",
+        "second_bg": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "semi_transparent_pixels": 1445901,
+        "snap_alpha_below": 12,
+        "strict_pass": true,
+        "too_high_diff_ratio": 0.0,
+        "transparent_pixels": 123694,
+        "width": 1536
+      },
+      "returncode": 0,
+      "stderr": "",
+      "strict_pass": true
+    }
+  ],
+  "commands": {
+    "black_white": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/alpha_from_background_pair.py",
+      "--candidate-name",
+      "black-white",
+      "--first",
+      "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_0ae6c5d936e58a17016a4ce74f17a08194b2ac773499385b92.png",
+      "--second",
+      "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_0906b19802978314016a4ce79598c48191b159d17cfceb1bc1.png",
+      "--first-bg",
+      "#000000",
+      "--second-bg",
+      "#ffffff",
+      "--out",
+      "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip-black-white.png",
+      "--quality-profile",
+      "soft-photoreal",
+      "--max-spread-p95",
+      "0.18",
+      "--max-spread-p99",
+      "0.1",
+      "--max-spread-max",
+      "0.35",
+      "--max-negative-ratio",
+      "0.18",
+      "--max-too-high-ratio",
+      "0.0",
+      "--json"
+    ],
+    "export_webp": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/export_image.py",
+      "--input",
+      "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.png",
+      "--format",
+      "webp",
+      "--out",
+      "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.webp",
+      "--preserve-alpha",
+      "--lossless",
+      "--json"
+    ],
+    "verify_png": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/verify_alpha.py",
+      "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.png",
+      "--json"
+    ],
+    "verify_webp": [
+      "/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/Users/vid/generate-transparent-image-skill/scripts/verify_alpha.py",
+      "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.webp",
+      "--json"
+    ]
+  },
+  "demo_id": "web-animation-sprite-strip",
+  "export_webp": {
+    "report": {
+      "background": [
+        255,
+        255,
+        255
+      ],
+      "flattened": false,
+      "format": "webp",
+      "input": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.png",
+      "lossless": true,
+      "out": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.webp",
+      "preserve_alpha": true,
+      "quality": 95,
+      "source_has_alpha": true,
+      "source_mode": "RGBA"
+    },
+    "returncode": 0,
+    "stderr": ""
+  },
+  "final_paths": {
+    "black": "/Users/vid/generate-transparent-image-skill/examples/pairs/web-animation-sprite-strip-black.png",
+    "green": "/Users/vid/generate-transparent-image-skill/examples/pairs/web-animation-sprite-strip-green.png",
+    "png": "/Users/vid/generate-transparent-image-skill/examples/transparent/web-animation-sprite-strip.png",
+    "report": "/Users/vid/generate-transparent-image-skill/examples/reports/web-animation-sprite-strip.json",
+    "webp": "/Users/vid/generate-transparent-image-skill/examples/transparent/web-animation-sprite-strip.webp",
+    "white": "/Users/vid/generate-transparent-image-skill/examples/pairs/web-animation-sprite-strip-white.png"
+  },
+  "green": null,
+  "height": 1024,
+  "max_negative_ratio": 0.18,
+  "quality_profile": "soft-photoreal",
+  "quality_profile_report": {
+    "description": "Opt-in relaxed gate for photoreal hair, soft shadows, glass, smoke, or other semitransparent edges. Requires visual QA before demos are copied.",
+    "max_negative_ratio": 0.18,
+    "max_spread_max": 0.35,
+    "max_spread_p95": 0.18,
+    "max_spread_p99": 0.1,
+    "max_too_high_ratio": 0.0,
+    "name": "soft-photoreal",
+    "requires_visual_qa": true,
+    "snap_alpha_below": 12,
+    "thresholds": {
+      "max_negative_ratio": 0.18,
+      "max_spread_max": 0.35,
+      "max_spread_p95": 0.18,
+      "max_spread_p99": 0.1,
+      "max_too_high_ratio": 0.0
+    }
+  },
+  "selected_candidate": "black-white",
+  "selection_rule": "Selected the passing candidate with the lowest negative_diff_ratio.",
+  "stage_png": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.png",
+  "stage_webp": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.webp",
+  "status": "passed-relaxed-visual-qa",
+  "verify_png": {
+    "report": {
+      "alpha_max": 255,
+      "alpha_min": 0,
+      "format": "PNG",
+      "fully_opaque_pixels": 3141,
+      "fully_transparent_pixels": 1423534,
+      "has_alpha": true,
+      "height": 1024,
+      "mode": "RGBA",
+      "path": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.png",
+      "semi_transparent_pixels": 146189,
+      "semi_transparent_ratio": 0.09294446309407552,
+      "transparent_pixels": 1569723,
+      "transparent_ratio": 0.9980030059814453,
+      "width": 1536
+    },
+    "returncode": 0,
+    "stderr": ""
+  },
+  "verify_webp": {
+    "report": {
+      "alpha_max": 255,
+      "alpha_min": 0,
+      "format": "WEBP",
+      "fully_opaque_pixels": 3141,
+      "fully_transparent_pixels": 1423534,
+      "has_alpha": true,
+      "height": 1024,
+      "mode": "RGBA",
+      "path": "/tmp/alphakit-add-demo-web-animation-sprite-strip/web-animation-sprite-strip.webp",
+      "semi_transparent_pixels": 146189,
+      "semi_transparent_ratio": 0.09294446309407552,
+      "transparent_pixels": 1569723,
+      "transparent_ratio": 0.9980030059814453,
+      "width": 1536
+    },
+    "returncode": 0,
+    "stderr": ""
+  },
+  "visual_qa_note": "User approved relaxed web animation asset visual QA despite visible background speckle risk; low-alpha snap cleanup applied.",
+  "visual_qa_passed": true,
+  "visual_qa_required": true,
+  "white": "/Users/vid/.codex/generated_images/019f3251-7389-7470-a8eb-e2c8acbbf565/ig_0906b19802978314016a4ce79598c48191b159d17cfceb1bc1.png",
+  "width": 1536
+}

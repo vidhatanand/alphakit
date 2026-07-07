@@ -1,27 +1,39 @@
 # Alphakit Examples
 
-This folder contains transparent sample assets generated for the Alphakit README.
+This folder is reserved for real Codex-generated black/white pair demos.
 
-- `transparent/*.png`: true-alpha PNG examples.
-- `transparent/*.webp`: lossless WebP alpha exports of the same examples.
-- `prompts.json`: prompt, category, and output path metadata for each example.
+Accepted demo structure:
 
-This folder intentionally excludes procedural fake-photoreal demo assets. The main README keeps photorealistic product, human, and model workflows as prompt recipes so real generated outputs can be verified with Alphakit.
+- `pairs/<demo>-black.png`: Codex-generated black-background source.
+- `pairs/<demo>-white.png`: generated with the black image as reference input, changing only the background to white.
+- `pairs/<demo>-green.png`: optional green-background third image, generated only after black/white `negative_diff_ratio` fails.
+- `transparent/<demo>.png`: output from `scripts/alpha_from_black_white.py`.
+- `transparent/<demo>.webp`: lossless WebP export with alpha.
+- `reports/<demo>.json`: extraction profile, selected candidate, visual-QA state, and alpha verification report.
+- `demo_prompts.json`: prompt metadata for all requested demo categories.
 
-The main README also includes advanced prompt recipes for web animation sprites, game asset sheets, game avatar sprites, and VFX frames.
+Do not add procedural demos, chroma-key demos, or single-background-removal demos.
 
-Regenerate them with:
+Accepted demos:
+
+| Demo | Status | Profile | Selected Candidate |
+| --- | --- | --- | --- |
+| `photorealistic-product-cutouts` | `passed` | `strict` | `black-green` |
+| `photorealistic-human-model-cutouts` | `passed-relaxed-visual-qa` | `soft-photoreal` | `black-white` |
+| `hair-alpha-stress-test` | `passed-relaxed-visual-qa` | `soft-photoreal` | `black-green` |
+| `web-animation-sprite-strip` | `passed-relaxed-visual-qa` | `soft-photoreal` | `black-white` |
+
+Generate demos with:
 
 ```bash
-/Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
-  scripts/build_examples.py
+python3 scripts/add_demo_pair.py \
+  --demo-id <demo-id> \
+  --black <codex-generated-black.png> \
+  --white <codex-generated-white.png> \
+  --green <codex-generated-green.png> \
+  --force
 ```
 
-Verify them with:
+Use Codex imagegen for the black and white generations. Generate green only after black/white `negative_diff_ratio` fails threshold. The white and optional green images must use the black image file as explicit reference input and request the black file's actual pixel size.
 
-```bash
-for image in examples/transparent/*.{png,webp}; do
-  /Users/vid/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
-    scripts/verify_alpha.py "$image" >/dev/null
-done
-```
+The validator copies files into this folder only after the active quality profile passes and PNG/WebP alpha verification pass. Relaxed `soft-photoreal` outputs require a second run with `--visual-qa-pass --visual-qa-note "..."` after the staged output is inspected and accepted.
