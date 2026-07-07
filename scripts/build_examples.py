@@ -92,9 +92,10 @@ def draw_icon_sprite_sheet():
         halo = rounded_layer(image.size, (cx - 42, 22, cx + 42, 106), 24, (*colors[idx][:3], 38))
         image.alpha_composite(halo)
 
-    draw.polygon(sc_points(star(64, 64, 34, 11, 4)), fill=(21, 184, 166, 245))
-    draw.ellipse(sc_rect((93, 33, 102, 42)), fill=(255, 255, 255, 180))
-    draw.ellipse(sc_rect((31, 86, 39, 94)), fill=(255, 255, 255, 145))
+    draw.ellipse(sc_rect((27, 27, 101, 101)), fill=(21, 184, 166, 238))
+    draw.polygon(sc_points(star(64, 64, 28, 8, 4)), fill=(255, 255, 255, 238))
+    draw.polygon(sc_points(star(88, 39, 10, 3, 4)), fill=(255, 255, 255, 190))
+    draw.ellipse(sc_rect((30, 88, 39, 97)), fill=(255, 255, 255, 155))
 
     draw.polygon(sc_points([(192, 28), (224, 43), (217, 83), (192, 101), (167, 83), (160, 43)]), fill=(79, 70, 229, 240))
     draw.line(sc_points([(177, 62), (188, 75), (210, 51)]), fill=(255, 255, 255, 225), width=6 * SCALE, joint="curve")
@@ -183,56 +184,6 @@ def draw_hero_swoosh_divider():
     for pts, color in bands:
         draw.polygon(sc_points(pts), fill=color)
     draw.line(sc_points([(55, 158), (310, 111), (512, 80), (742, 112), (908, 78)]), fill=(255, 255, 255, 104), width=5 * SCALE, joint="curve")
-    return finish(image)
-
-
-def draw_realistic_product_set():
-    image = canvas(900, 520)
-    draw = ImageDraw.Draw(image)
-    shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    sdraw = ImageDraw.Draw(shadow)
-    for box in [(116, 407, 316, 455), (350, 430, 554, 476), (600, 410, 797, 458)]:
-        sdraw.ellipse(sc_rect(box), fill=(7, 12, 24, 65))
-    image.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(10 * SCALE)))
-
-    products = [
-        (170, 110, 88, 300, (236, 72, 153), "serum"),
-        (410, 72, 112, 350, (20, 184, 166), "mist"),
-        (660, 125, 92, 282, (99, 102, 241), "cream"),
-    ]
-    for x, y, width, height, color, label in products:
-        body = rounded_layer(image.size, (x, y, x + width, y + height), 24, (*color, 66), (255, 255, 255, 150), 2)
-        image.alpha_composite(body)
-        draw.rounded_rectangle(sc_rect((x + width * 0.18, y + 18, x + width * 0.42, y + height - 18)), radius=8 * SCALE, fill=(255, 255, 255, 78))
-        draw.rounded_rectangle(sc_rect((x + width * 0.16, y - 34, x + width * 0.84, y + 14)), radius=12 * SCALE, fill=(16, 24, 39, 238))
-        draw.rounded_rectangle(sc_rect((x + width * 0.22, y + height * 0.52, x + width * 0.78, y + height * 0.74)), radius=10 * SCALE, fill=(255, 255, 255, 210))
-        draw.text(sc_rect((x + width * 0.28, y + height * 0.58))[:2], label, font=font(15, bold=True), fill=(15, 23, 42, 210))
-        draw.arc(sc_rect((x + width * 0.08, y + 22, x + width * 0.92, y + height - 20)), 255, 292, fill=(255, 255, 255, 95), width=4 * SCALE)
-    return finish(image)
-
-
-def draw_realistic_food_set():
-    image = canvas(820, 470)
-    draw = ImageDraw.Draw(image)
-    shadow = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    sdraw = ImageDraw.Draw(shadow)
-    sdraw.ellipse(sc_rect((128, 360, 410, 420)), fill=(7, 12, 24, 58))
-    sdraw.ellipse(sc_rect((438, 350, 725, 424)), fill=(7, 12, 24, 60))
-    image.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(9 * SCALE)))
-
-    draw.rounded_rectangle(sc_rect((185, 140, 345, 365)), radius=28 * SCALE, fill=(245, 245, 240, 246), outline=(230, 224, 214, 255), width=3 * SCALE)
-    draw.ellipse(sc_rect((179, 117, 351, 175)), fill=(236, 230, 219, 255), outline=(255, 255, 255, 220), width=3 * SCALE)
-    draw.ellipse(sc_rect((203, 128, 327, 163)), fill=(99, 58, 34, 240))
-    draw.arc(sc_rect((322, 198, 420, 302)), -74, 82, fill=(245, 245, 240, 248), width=20 * SCALE)
-    for x in [226, 260, 294]:
-        draw.arc(sc_rect((x, 62, x + 46, 156)), 230, 292, fill=(255, 255, 255, 82), width=5 * SCALE)
-
-    draw.ellipse(sc_rect((470, 178, 696, 352)), fill=(190, 121, 62, 255))
-    draw.ellipse(sc_rect((494, 195, 674, 334)), fill=(219, 151, 82, 255))
-    draw.arc(sc_rect((512, 205, 654, 324)), 18, 342, fill=(122, 74, 43, 170), width=13 * SCALE)
-    for cx, cy in [(535, 232), (610, 222), (650, 275), (565, 306)]:
-        draw.ellipse(sc_rect((cx - 8, cy - 5, cx + 8, cy + 5)), fill=(91, 52, 31, 190))
-    draw.line(sc_points([(508, 185), (548, 162), (612, 163), (680, 196)]), fill=(255, 244, 214, 155), width=5 * SCALE)
     return finish(image)
 
 
@@ -359,20 +310,6 @@ EXAMPLES = [
         "category": "transparent web page design element",
         "prompt": "A transparent PNG hero-section swoosh divider with layered teal, coral, and ink ribbons, soft highlights, no background.",
         "factory": draw_hero_swoosh_divider,
-    },
-    {
-        "id": "realistic-product-set",
-        "title": "Realistic product cutout set",
-        "category": "photorealistic transparent image set",
-        "prompt": "A photorealistic transparent PNG product cutout set with three premium cosmetic bottles, glass reflections, soft contact shadows, isolated subject, no background.",
-        "factory": draw_realistic_product_set,
-    },
-    {
-        "id": "realistic-food-set",
-        "title": "Realistic cafe cutout set",
-        "category": "photorealistic transparent image set",
-        "prompt": "A photorealistic transparent PNG cafe cutout set with a ceramic coffee cup, espresso surface, steam wisps, and a pastry, isolated subject, no background.",
-        "factory": draw_realistic_food_set,
     },
     {
         "id": "web-animation-button-glint",

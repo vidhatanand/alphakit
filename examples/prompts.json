@@ -40,22 +40,6 @@
     "webp": "examples/transparent/hero-swoosh-divider.webp"
   },
   {
-    "id": "realistic-product-set",
-    "title": "Realistic product cutout set",
-    "category": "photorealistic transparent image set",
-    "prompt": "A photorealistic transparent PNG product cutout set with three premium cosmetic bottles, glass reflections, soft contact shadows, isolated subject, no background.",
-    "png": "examples/transparent/realistic-product-set.png",
-    "webp": "examples/transparent/realistic-product-set.webp"
-  },
-  {
-    "id": "realistic-food-set",
-    "title": "Realistic cafe cutout set",
-    "category": "photorealistic transparent image set",
-    "prompt": "A photorealistic transparent PNG cafe cutout set with a ceramic coffee cup, espresso surface, steam wisps, and a pastry, isolated subject, no background.",
-    "png": "examples/transparent/realistic-food-set.png",
-    "webp": "examples/transparent/realistic-food-set.webp"
-  },
-  {
     "id": "web-animation-button-glint",
     "title": "Web animation button glint",
     "category": "transparent web animation sprite strip",

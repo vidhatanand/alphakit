@@ -68,12 +68,38 @@ The `examples/transparent/` folder contains verified transparent PNG assets and 
 | ![Launch badge](examples/transparent/launch-badge.png) | Badge / sticker | `A transparent PNG launch badge for a modern AI tool, layered sticker shape, subtle shadow, clean edges, no background.` |
 | ![Bird over globe](examples/transparent/bird-over-globe-100km.png) | Transparent illustration | `A stylized bird flying above a globe at 100 km altitude, clean editorial illustration, isolated subject, pure transparent background.` |
 | ![Hero swoosh divider](examples/transparent/hero-swoosh-divider.png) | Web page design element | `A transparent PNG hero-section swoosh divider with layered teal, coral, and ink ribbons, soft highlights, no background.` |
-| ![Realistic product cutout set](examples/transparent/realistic-product-set.png) | Photorealistic image set | `A photorealistic transparent PNG product cutout set with three premium cosmetic bottles, glass reflections, soft contact shadows, isolated subject, no background.` |
-| ![Realistic cafe cutout set](examples/transparent/realistic-food-set.png) | Photorealistic image set | `A photorealistic transparent PNG cafe cutout set with a ceramic coffee cup, espresso surface, steam wisps, and a pastry, isolated subject, no background.` |
 | ![Web animation button glint](examples/transparent/web-animation-button-glint.png) | Web animation sprite strip | `A transparent PNG sprite strip for a website CTA hover animation: eight frames of a frosted button glint, glow pulse, and clean alpha edges.` |
 | ![Web animation particle burst](examples/transparent/web-animation-particle-burst.png) | Web animation sprite strip | `A transparent PNG sprite strip for a webpage success animation: eight frames of colorful particles expanding outward, clean alpha, no background.` |
 | ![Game platformer asset sheet](examples/transparent/game-platformer-assets.png) | Game assets | `A transparent PNG game asset sprite sheet for a platformer: player idle frames, coins, crates, and collectible stars, crisp edges, no background.` |
 | ![Game effects sprite sheet](examples/transparent/game-effects-sprite-sheet.png) | Game assets | `A transparent PNG game effects sprite sheet with eight explosion and magic-burst frames, smoke puffs, bright highlights, clean alpha, no background.` |
+
+## Advanced Prompt Recipes
+
+Use these prompts with Alphakit when you want production-grade transparent assets. The examples above are deterministic demo files; these prompts are written for real image generation workflows where Alphakit then verifies or extracts the final alpha.
+
+### Photorealistic Product Cutout Set
+
+```text
+Use $alphakit to generate a transparent PNG and lossless WebP product cutout set: five premium skincare bottles arranged as separate isolated objects, photorealistic studio lighting, clear glass and brushed aluminum materials, visible liquid refraction, subtle contact shadows that remain part of the alpha subject, no floor, no backdrop, no checkerboard, no text, no watermark. Output at 2048x2048 with clean semi-transparent edge pixels suitable for ecommerce hover animations.
+```
+
+### Web Animation Sprite Strip
+
+```text
+Use $alphakit to generate a transparent PNG sprite strip for a website hero animation: 12 horizontal frames, each frame 256x256, a premium glassmorphism CTA badge assembling from soft particles into a sharp button, consistent center alignment, frame-to-frame motion continuity, transparent background, no page mockup, no text, no checkerboard. Also export a lossless WebP with alpha and verify transparency.
+```
+
+### Game Asset Pack
+
+```text
+Use $alphakit to generate a transparent PNG game asset sheet: 8x8 grid, 128px cells, top-down fantasy RPG items including potions, coins, keys, gems, crates, scrolls, hearts, and spell projectiles, consistent camera angle, readable silhouettes, no background, no shadows outside each cell, no text. Export PNG plus lossless WebP and verify alpha.
+```
+
+### Game VFX Frames
+
+```text
+Use $alphakit to generate a transparent PNG VFX sprite sheet: 16 frames in a single row, a fire-to-magic impact burst expanding then fading, consistent origin point, no camera movement, bright core, smoke wisps with semi-transparent alpha, no black background, no checkerboard. Verify the PNG/WebP alpha and reject the result if any frame is opaque.
+```
 
 Regenerate the example set:
 

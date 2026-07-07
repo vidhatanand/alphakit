@@ -6,6 +6,8 @@ This folder contains transparent sample assets generated for the Alphakit README
 - `transparent/*.webp`: lossless WebP alpha exports of the same examples.
 - `prompts.json`: prompt, category, and output path metadata for each example.
 
+The main README includes advanced prompt recipes for photorealistic cutouts, web animation sprites, game asset sheets, and VFX frames.
+
 Regenerate them with:
 
 ```bash
