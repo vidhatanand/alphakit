@@ -1,4 +1,4 @@
-# Image Output Methods
+# Alphakit Image Output Methods
 
 ## Format Selection
 

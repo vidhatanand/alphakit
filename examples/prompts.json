@@ -1,0 +1,90 @@
+[
+  {
+    "id": "icon-sprite-sheet",
+    "title": "Icon sprite sheet",
+    "category": "icon sprites",
+    "prompt": "A compact transparent PNG sprite sheet with four polished app icons: sparkle, shield, lightning bolt, and cursor pointer, crisp vector-like edges, no background.",
+    "png": "examples/transparent/icon-sprite-sheet.png",
+    "webp": "examples/transparent/icon-sprite-sheet.webp"
+  },
+  {
+    "id": "glass-navigation-element",
+    "title": "Glass navigation element",
+    "category": "transparent web page design element",
+    "prompt": "A transparent PNG website navigation component with frosted glass pill, subtle border, tab indicators, and no page background.",
+    "png": "examples/transparent/glass-navigation-element.png",
+    "webp": "examples/transparent/glass-navigation-element.webp"
+  },
+  {
+    "id": "launch-badge",
+    "title": "Launch badge",
+    "category": "transparent badge",
+    "prompt": "A transparent PNG launch badge for a modern AI tool, layered sticker shape, subtle shadow, clean edges, no background.",
+    "png": "examples/transparent/launch-badge.png",
+    "webp": "examples/transparent/launch-badge.webp"
+  },
+  {
+    "id": "bird-over-globe-100km",
+    "title": "Bird over globe at 100 km",
+    "category": "transparent illustration",
+    "prompt": "A stylized bird flying above a globe at 100 km altitude, clean editorial illustration, isolated subject, pure transparent background.",
+    "png": "examples/transparent/bird-over-globe-100km.png",
+    "webp": "examples/transparent/bird-over-globe-100km.webp"
+  },
+  {
+    "id": "hero-swoosh-divider",
+    "title": "Hero swoosh divider",
+    "category": "transparent web page design element",
+    "prompt": "A transparent PNG hero-section swoosh divider with layered teal, coral, and ink ribbons, soft highlights, no background.",
+    "png": "examples/transparent/hero-swoosh-divider.png",
+    "webp": "examples/transparent/hero-swoosh-divider.webp"
+  },
+  {
+    "id": "realistic-product-set",
+    "title": "Realistic product cutout set",
+    "category": "photorealistic transparent image set",
+    "prompt": "A photorealistic transparent PNG product cutout set with three premium cosmetic bottles, glass reflections, soft contact shadows, isolated subject, no background.",
+    "png": "examples/transparent/realistic-product-set.png",
+    "webp": "examples/transparent/realistic-product-set.webp"
+  },
+  {
+    "id": "realistic-food-set",
+    "title": "Realistic cafe cutout set",
+    "category": "photorealistic transparent image set",
+    "prompt": "A photorealistic transparent PNG cafe cutout set with a ceramic coffee cup, espresso surface, steam wisps, and a pastry, isolated subject, no background.",
+    "png": "examples/transparent/realistic-food-set.png",
+    "webp": "examples/transparent/realistic-food-set.webp"
+  },
+  {
+    "id": "web-animation-button-glint",
+    "title": "Web animation button glint",
+    "category": "transparent web animation sprite strip",
+    "prompt": "A transparent PNG sprite strip for a website CTA hover animation: eight frames of a frosted button glint, glow pulse, and clean alpha edges.",
+    "png": "examples/transparent/web-animation-button-glint.png",
+    "webp": "examples/transparent/web-animation-button-glint.webp"
+  },
+  {
+    "id": "web-animation-particle-burst",
+    "title": "Web animation particle burst",
+    "category": "transparent web animation sprite strip",
+    "prompt": "A transparent PNG sprite strip for a webpage success animation: eight frames of colorful particles expanding outward, clean alpha, no background.",
+    "png": "examples/transparent/web-animation-particle-burst.png",
+    "webp": "examples/transparent/web-animation-particle-burst.webp"
+  },
+  {
+    "id": "game-platformer-assets",
+    "title": "Game platformer asset sheet",
+    "category": "transparent game assets",
+    "prompt": "A transparent PNG game asset sprite sheet for a platformer: player idle frames, coins, crates, and collectible stars, crisp edges, no background.",
+    "png": "examples/transparent/game-platformer-assets.png",
+    "webp": "examples/transparent/game-platformer-assets.webp"
+  },
+  {
+    "id": "game-effects-sprite-sheet",
+    "title": "Game effects sprite sheet",
+    "category": "transparent game assets",
+    "prompt": "A transparent PNG game effects sprite sheet with eight explosion and magic-burst frames, smoke puffs, bright highlights, clean alpha, no background.",
+    "png": "examples/transparent/game-effects-sprite-sheet.png",
+    "webp": "examples/transparent/game-effects-sprite-sheet.webp"
+  }
+]

@@ -1,9 +1,9 @@
 ---
-name: generate-transparent-image
+name: alphakit
 description: Generate, export, convert, and verify standard or transparent image assets from prompts or existing images. Use when Codex is asked for image generation, JPEG/PNG/WebP output, transparent backgrounds, alpha-channel cutouts, background removal, PNG/WebP transparency verification, or black/white background alpha extraction from aligned image pairs.
 ---
 
-# Generate Transparent Image
+# Alphakit
 
 ## Format Gate
 
