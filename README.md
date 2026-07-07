@@ -57,9 +57,11 @@ Use $alphakit to remove the background from this image and verify the PNG has re
 
 If you do not specify `PNG`, `JPEG`, or `WebP`, Alphakit instructs Codex to ask for the needed output format before generating or exporting.
 
-## Examples
+## Verified Demo Assets
 
 The `examples/transparent/` folder contains verified transparent PNG assets and lossless WebP exports. Each example includes the source prompt in `examples/prompts.json`.
+
+This folder intentionally avoids procedural fake-photoreal placeholders. Photorealistic humans, models, products, and catalog cutouts are covered as prompt recipes below so real image-generation output can be verified instead of represented by weak synthetic stand-ins.
 
 | Asset | Type | Prompt |
 | --- | --- | --- |
@@ -73,14 +75,32 @@ The `examples/transparent/` folder contains verified transparent PNG assets and 
 | ![Game platformer asset sheet](examples/transparent/game-platformer-assets.png) | Game assets | `A transparent PNG game asset sprite sheet for a platformer: player idle frames, coins, crates, and collectible stars, crisp edges, no background.` |
 | ![Game effects sprite sheet](examples/transparent/game-effects-sprite-sheet.png) | Game assets | `A transparent PNG game effects sprite sheet with eight explosion and magic-burst frames, smoke puffs, bright highlights, clean alpha, no background.` |
 
-## Advanced Prompt Recipes
+## Advanced Prompt Recipes, Not Demo Assets
 
-Use these prompts with Alphakit when you want production-grade transparent assets. The examples above are deterministic demo files; these prompts are written for real image generation workflows where Alphakit then verifies or extracts the final alpha.
+Use these prompts with Alphakit when you want production-grade transparent assets. The assets above are deterministic demo files; the prompts below are written for real image generation workflows where Alphakit then verifies or extracts the final alpha.
 
 ### Photorealistic Product Cutout Set
 
 ```text
 Use $alphakit to generate a transparent PNG and lossless WebP product cutout set: five premium skincare bottles arranged as separate isolated objects, photorealistic studio lighting, clear glass and brushed aluminum materials, visible liquid refraction, subtle contact shadows that remain part of the alpha subject, no floor, no backdrop, no checkerboard, no text, no watermark. Output at 2048x2048 with clean semi-transparent edge pixels suitable for ecommerce hover animations.
+```
+
+### Photorealistic Human Cutout Set
+
+```text
+Use $alphakit to generate a transparent PNG and lossless WebP human cutout set: six generic adult people, full-body, diverse outfits and poses, photorealistic studio lighting, realistic hair edges and fabric detail, each person isolated with clear spacing, no celebrities, no logos, no text, no floor, no backdrop, no checkerboard. Output at 3072x2048 with true alpha, preserve natural semi-transparent hair pixels, and verify transparency.
+```
+
+### Fashion Model Catalog Cutouts
+
+```text
+Use $alphakit to generate transparent PNG and lossless WebP fashion model cutouts: four generic adult models wearing unbranded streetwear, ecommerce catalog style, front three-quarter poses, realistic skin texture, fabric folds, shoes fully visible, soft contact shadows included only under each subject, no background, no studio wall, no text, no watermark. Export clean alpha for web product cards and verify PNG/WebP transparency.
+```
+
+### Photorealistic Hair Alpha Stress Test
+
+```text
+Use $alphakit to generate a transparent PNG portrait cutout of a generic adult model with detailed curly hair, photorealistic lighting, shoulders-up composition, clean alpha around individual hair strands, no background color, no halo, no checkerboard, no text. If native alpha fails, use an aligned black/white pair extraction and report edge quality before exporting WebP.
 ```
 
 ### Web Animation Sprite Strip
@@ -93,6 +113,18 @@ Use $alphakit to generate a transparent PNG sprite strip for a website hero anim
 
 ```text
 Use $alphakit to generate a transparent PNG game asset sheet: 8x8 grid, 128px cells, top-down fantasy RPG items including potions, coins, keys, gems, crates, scrolls, hearts, and spell projectiles, consistent camera angle, readable silhouettes, no background, no shadows outside each cell, no text. Export PNG plus lossless WebP and verify alpha.
+```
+
+### Game Avatar Sprite Sheet
+
+```text
+Use $alphakit to generate a transparent PNG game avatar sprite sheet: one original non-celebrity character, 8 columns x 6 rows, 128px cells, idle, walk, run, jump, attack, and hurt animations, consistent proportions and outfit across all frames, pixel-perfect transparent background, no cell borders, no text, no shadows clipped at frame edges. Export PNG plus lossless WebP and verify every frame has alpha.
+```
+
+### Dialogue Avatar Portrait Pack
+
+```text
+Use $alphakit to generate a transparent PNG dialogue avatar pack: 12 original game character bust portraits, consistent art direction, varied expressions, clean silhouettes, readable at 256px, no copyrighted characters, no background, no text, no UI frame. Export as one sprite sheet plus individual transparent PNG crops, then verify alpha for every output.
 ```
 
 ### Game VFX Frames
