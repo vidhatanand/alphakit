@@ -39,6 +39,20 @@ QUALITY_PROFILES: dict[str, QualityProfile] = {
             "or other semitransparent edges. Requires visual QA before demos are copied."
         ),
     ),
+    "game-sprite": QualityProfile(
+        name="game-sprite",
+        max_spread_p95=0.28,
+        max_spread_p99=0.36,
+        max_spread_max=0.70,
+        max_negative_ratio=0.20,
+        snap_alpha_below=40,
+        requires_visual_qa=True,
+        description=(
+            "Opt-in relaxed gate for generated game sprites, icon sheets, portrait packs, "
+            "and VFX frames where Codex reference generation preserves layout but changes "
+            "edge/background pixels. Requires visual QA before demos are copied."
+        ),
+    ),
 }
 
 

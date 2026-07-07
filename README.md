@@ -10,7 +10,7 @@ It supports:
 - Codex image generation as the source-image generator for prompt-to-image work
 - verifying whether a PNG/WebP has a real alpha channel
 - extracting alpha from aligned black/white pairs, with a controlled green third-background candidate
-- strict and opt-in `soft-photoreal` quality profiles for hair, shadows, glass, smoke, and other soft alpha edges
+- strict and opt-in relaxed quality profiles for photoreal edges and generated game sprites
 - self-tests that verify black/white extraction and reject misaligned pairs
 
 ## Install
@@ -69,7 +69,7 @@ Committed demo assets must use the black/white pair workflow:
 4. Run `scripts/add_demo_pair.py`.
 5. If black/white fails because `negative_diff_ratio` exceeds threshold, generate a green-background third image from the black image reference and rerun `scripts/add_demo_pair.py --green`.
 6. Verify the PNG/WebP with `scripts/verify_alpha.py`.
-7. For `--quality-profile soft-photoreal`, inspect the staged output and rerun with `--visual-qa-pass` only if you accept the visible edge/noise tradeoff.
+7. For relaxed profiles such as `soft-photoreal` or `game-sprite`, inspect the staged output and rerun with `--visual-qa-pass` only if you accept the visible edge/noise tradeoff.
 
 Do not commit procedural demos, chroma-key demos, or single-background-removal demos.
 
@@ -81,6 +81,10 @@ Accepted demos:
 | Photorealistic human/model cutouts | ![Photorealistic human model cutouts](examples/transparent/photorealistic-human-model-cutouts.png) | [WebP](examples/transparent/photorealistic-human-model-cutouts.webp) | `soft-photoreal` + user visual QA | `black-white` | [report](examples/reports/photorealistic-human-model-cutouts.json) |
 | Hair alpha stress test | ![Hair alpha stress test](examples/transparent/hair-alpha-stress-test.png) | [WebP](examples/transparent/hair-alpha-stress-test.webp) | `soft-photoreal` + user visual QA | `black-green` | [report](examples/reports/hair-alpha-stress-test.json) |
 | Web animation sprite strip | ![Web animation sprite strip](examples/transparent/web-animation-sprite-strip.png) | [WebP](examples/transparent/web-animation-sprite-strip.webp) | `soft-photoreal` + user visual QA | `black-white` | [report](examples/reports/web-animation-sprite-strip.json) |
+| Game asset pack | ![Game asset pack](examples/transparent/game-asset-pack.png) | [WebP](examples/transparent/game-asset-pack.webp) | `game-sprite` + user visual QA | `black-white` | [report](examples/reports/game-asset-pack.json) |
+| Game avatar sprite sheet | ![Game avatar sprite sheet](examples/transparent/game-avatar-sprite-sheet.png) | [WebP](examples/transparent/game-avatar-sprite-sheet.webp) | `game-sprite` + user visual QA | `black-white` | [report](examples/reports/game-avatar-sprite-sheet.json) |
+| Dialogue avatar portrait pack | ![Dialogue avatar portrait pack](examples/transparent/dialogue-avatar-portrait-pack.png) | [WebP](examples/transparent/dialogue-avatar-portrait-pack.webp) | `game-sprite` + user visual QA | `black-white` | [report](examples/reports/dialogue-avatar-portrait-pack.json) |
+| Game VFX frames | ![Game VFX frames](examples/transparent/game-vfx-frames.png) | [WebP](examples/transparent/game-vfx-frames.webp) | `game-sprite` + user visual QA | `black-white` | [report](examples/reports/game-vfx-frames.json) |
 
 Generate demo candidates:
 
@@ -135,11 +139,35 @@ python3 scripts/add_demo_pair.py \
   --force
 ```
 
+For generated game sprites, icon sheets, portrait packs, and VFX frames where Codex preserves layout but drifts edge/background pixels, use the `game-sprite` profile. It is also visual-QA gated:
+
+```bash
+python3 scripts/add_demo_pair.py \
+  --demo-id game-avatar-sprite-sheet \
+  --black /path/to/demo-black.png \
+  --white /path/to/demo-white.png \
+  --quality-profile game-sprite \
+  --force
+```
+
+Only copy after inspecting the staged PNG/WebP:
+
+```bash
+python3 scripts/add_demo_pair.py \
+  --demo-id game-avatar-sprite-sheet \
+  --black /path/to/demo-black.png \
+  --white /path/to/demo-white.png \
+  --quality-profile game-sprite \
+  --visual-qa-pass \
+  --visual-qa-note "Accepted after visual QA." \
+  --force
+```
+
 The validator copies only passing demos into `examples/pairs/`, `examples/transparent/`, and `examples/reports/`. It does not require `OPENAI_API_KEY`. If Codex imagegen is not installed or not available in the current Codex session, stop and warn instead of using API-backed generation.
 
 ## Advanced Prompt Recipes, Not Demo Assets
 
-Use these prompts with Alphakit when you want production-grade transparent assets. The demo manifest in `examples/demo_prompts.json` mirrors these categories for the strict black/white pair generation workflow.
+Use these prompts with Alphakit when you want production-grade transparent assets. The demo manifest in `examples/demo_prompts.json` mirrors these categories for the black/white pair generation workflow.
 
 ### Photorealistic Product Cutout Set
 
@@ -247,6 +275,7 @@ Expected result includes:
 - aligned black/white alpha extraction with very low error
 - misaligned black/white pair rejected
 - strict rejection plus `soft-photoreal` acceptance for a synthetic negative-diff case
+- `game-sprite` relaxed import blocked until `--visual-qa-pass`
 - relaxed demo import blocked until `--visual-qa-pass`
 - PNG and WebP alpha verification passing
 - standard JPEG and WebP export passing

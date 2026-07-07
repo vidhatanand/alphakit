@@ -376,6 +376,61 @@ def main() -> int:
             print("ERROR soft profile pass was not marked as visual-QA approved", file=sys.stderr)
             return 1
 
+        add_pair_game_sprite_needs_qa_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "add_demo_pair.py"),
+                "--demo-id",
+                "synthetic-game-sprite-needs-qa-test",
+                "--black",
+                str(black),
+                "--white",
+                str(white_negative_bad),
+                "--quality-profile",
+                "game-sprite",
+                "--examples-dir",
+                str(tmp_path / "examples-game-sprite-needs-qa"),
+                "--force",
+            ]
+        )
+        print("add_demo_pair_game_sprite_needs_qa_exit_code", add_pair_game_sprite_needs_qa_result.returncode)
+        if add_pair_game_sprite_needs_qa_result.returncode != 3:
+            print(add_pair_game_sprite_needs_qa_result.stdout)
+            print(add_pair_game_sprite_needs_qa_result.stderr, file=sys.stderr)
+            return add_pair_game_sprite_needs_qa_result.returncode or 1
+        if "requires-visual-qa" not in add_pair_game_sprite_needs_qa_result.stdout:
+            print("ERROR game-sprite profile did not require visual QA", file=sys.stderr)
+            return 1
+
+        add_pair_game_sprite_pass_result = run(
+            [
+                sys.executable,
+                str(SCRIPT_DIR / "add_demo_pair.py"),
+                "--demo-id",
+                "synthetic-game-sprite-pass-test",
+                "--black",
+                str(black),
+                "--white",
+                str(white_negative_bad),
+                "--quality-profile",
+                "game-sprite",
+                "--visual-qa-pass",
+                "--visual-qa-note",
+                "Synthetic game-sprite visual QA gate test.",
+                "--examples-dir",
+                str(tmp_path / "examples-game-sprite-pass"),
+                "--force",
+            ]
+        )
+        print("add_demo_pair_game_sprite_pass_exit_code", add_pair_game_sprite_pass_result.returncode)
+        if add_pair_game_sprite_pass_result.returncode != 0:
+            print(add_pair_game_sprite_pass_result.stdout)
+            print(add_pair_game_sprite_pass_result.stderr, file=sys.stderr)
+            return add_pair_game_sprite_pass_result.returncode
+        if "passed-relaxed-visual-qa" not in add_pair_game_sprite_pass_result.stdout:
+            print("ERROR game-sprite profile pass was not marked as visual-QA approved", file=sys.stderr)
+            return 1
+
     return 0
 
 

@@ -22,6 +22,10 @@ Accepted demos:
 | `photorealistic-human-model-cutouts` | `passed-relaxed-visual-qa` | `soft-photoreal` | `black-white` |
 | `hair-alpha-stress-test` | `passed-relaxed-visual-qa` | `soft-photoreal` | `black-green` |
 | `web-animation-sprite-strip` | `passed-relaxed-visual-qa` | `soft-photoreal` | `black-white` |
+| `game-asset-pack` | `passed-relaxed-visual-qa` | `game-sprite` | `black-white` |
+| `game-avatar-sprite-sheet` | `passed-relaxed-visual-qa` | `game-sprite` | `black-white` |
+| `dialogue-avatar-portrait-pack` | `passed-relaxed-visual-qa` | `game-sprite` | `black-white` |
+| `game-vfx-frames` | `passed-relaxed-visual-qa` | `game-sprite` | `black-white` |
 
 Generate demos with:
 
@@ -36,4 +40,4 @@ python3 scripts/add_demo_pair.py \
 
 Use Codex imagegen for the black and white generations. Generate green only after black/white `negative_diff_ratio` fails threshold. The white and optional green images must use the black image file as explicit reference input and request the black file's actual pixel size.
 
-The validator copies files into this folder only after the active quality profile passes and PNG/WebP alpha verification pass. Relaxed `soft-photoreal` outputs require a second run with `--visual-qa-pass --visual-qa-note "..."` after the staged output is inspected and accepted.
+The validator copies files into this folder only after the active quality profile passes and PNG/WebP alpha verification pass. Relaxed `soft-photoreal` and `game-sprite` outputs require a second run with `--visual-qa-pass --visual-qa-note "..."` after the staged output is inspected and accepted.

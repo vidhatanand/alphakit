@@ -78,6 +78,7 @@ Use the default `strict` profile unless the user explicitly asks to relax artifa
 
 - `strict`: default demo gate. Uses `negative_diff_ratio <= 0.03`, tight channel-spread limits, and snaps very low alpha to transparent in the saved output.
 - `soft-photoreal`: opt-in relaxed gate for hair, soft shadows, glass, smoke, and photoreal edge cases. Uses looser thresholds and requires `--visual-qa-pass` before `scripts/add_demo_pair.py` copies outputs into `examples/`.
+- `game-sprite`: opt-in relaxed gate for generated game sprites, icon sheets, portrait packs, and VFX frames where Codex reference generation preserves layout but changes edge/background pixels. Requires `--visual-qa-pass` before `scripts/add_demo_pair.py` copies outputs into `examples/`.
 
 For relaxed demos, first run without `--visual-qa-pass`, inspect the staged PNG/WebP paths in the report, then rerun with `--visual-qa-pass --visual-qa-note "..."`
 only if the user accepts the visible quality tradeoff. If the profile thresholds still fail, do not copy the demo and do not use another fallback unless the user decides to.
@@ -120,7 +121,7 @@ python3 scripts/export_image.py \
    - Create the first image on black, read its actual dimensions, then generate the white-background image with the black image as reference input and the actual black-image size while preserving subject placement.
    - If black/white fails only because `negative_diff_ratio` exceeds threshold, generate a green-background third image with the black image as reference input and rerun `add_demo_pair.py --green`.
    - Use the passing candidate with the lowest `negative_diff_ratio`.
-   - Use `--quality-profile soft-photoreal` only as an explicit, visual-QA-gated relaxation.
+   - Use `--quality-profile soft-photoreal` or `--quality-profile game-sprite` only as an explicit, visual-QA-gated relaxation.
    - Extract with:
 
 ```bash
@@ -161,14 +162,14 @@ For green fallback, do not use green as chroma-key removal; use it only as an ad
 - Save WebP as lossless when preserving alpha, or quality-controlled lossy for standard opaque images when requested.
 - Re-run `verify_alpha.py` after every conversion.
 - If verification fails, say what failed: missing alpha channel, all-opaque alpha, or no transparent pixels.
-- The default `negative_diff_ratio` threshold is `0.03`; do not use `soft-photoreal` unless the user explicitly accepts artifacts and visual QA.
+- The default `negative_diff_ratio` threshold is `0.03`; do not use `soft-photoreal` or `game-sprite` unless the user explicitly accepts artifacts and visual QA.
 - Keep generated source images and final alpha outputs separate so the workflow is auditable.
 
 ## Resources
 
 - `scripts/verify_alpha.py`: verify alpha channel and transparency stats.
 - `scripts/export_image.py`: export/convert standard or transparent PNG/JPEG/WebP outputs.
-- `scripts/quality_profiles.py`: central strict and `soft-photoreal` thresholds plus low-alpha snap settings.
+- `scripts/quality_profiles.py`: central strict, `soft-photoreal`, and `game-sprite` thresholds plus low-alpha snap settings.
 - `scripts/alpha_from_background_pair.py`: extract alpha from two aligned composites over known solid backgrounds, including black/green and green/white.
 - `scripts/alpha_from_black_white.py`: extract alpha from aligned black/white composites.
 - `scripts/responses_reference_generate.py`: generate with a reference image through Responses image_generation.

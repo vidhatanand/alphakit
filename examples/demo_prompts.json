@@ -35,25 +35,25 @@
       "id": "game-asset-pack",
       "title": "Game Asset Pack",
       "size": "1024x1024",
-      "prompt": "A game asset sheet in an 8 by 8 grid of readable top-down fantasy RPG items: potions, coins, keys, gems, crates, scrolls, hearts, and spell projectiles. Consistent camera angle, polished game art, readable silhouettes, no text, no logos, no watermark, no cell borders."
+      "prompt": "A strict-friendly game asset sheet with exactly 16 large isolated top-down fantasy RPG item icons arranged in a 4 by 4 grid: red potion, blue potion, gold coin stack, silver key, green gem, wooden crate, rolled scroll, red heart, sword, shield, boot, helmet, book, bomb, apple, and magic orb. Simple flat vector-like game icons, hard opaque edges, thick dark outline, one flat fill color plus one simple highlight per icon, no texture, no gradients, no soft shadows, no glow, no transparent effects, no cell borders, no text, no logos, no watermark."
     },
     {
       "id": "game-avatar-sprite-sheet",
       "title": "Game Avatar Sprite Sheet",
       "size": "1536x1024",
-      "prompt": "One original non-celebrity game avatar sprite sheet, 8 columns by 6 rows, idle, walk, run, jump, attack, and hurt animation frames. Consistent proportions and outfit across all frames, polished readable game art, no copyrighted characters, no text, no logos, no watermark, no cell borders."
+      "prompt": "A clean game avatar sprite sheet with one original non-celebrity flat-color red-hooded explorer mascot with teal pants and dark boots. Exactly 16 frames in a 4 by 4 grid: idle, walk, run, jump, crouch, wave, turn, hurt, and victory poses. Crisp 2D game sprite art with thick dark outline, mostly solid fills, very simple cel shading, no glow, no bloom, no smoke, no motion trails, no weapons, no shields, no bright white/yellow effects, no cast shadows, no soft shadows, no cell borders, no text, no logos, no watermark."
     },
     {
       "id": "dialogue-avatar-portrait-pack",
       "title": "Dialogue Avatar Portrait Pack",
       "size": "1536x1024",
-      "prompt": "A dialogue avatar portrait pack with 12 original non-celebrity game character bust portraits, consistent art direction, varied expressions, clean silhouettes, readable at small size, no copyrighted characters, no text, no logos, no watermark, no UI frames."
+      "prompt": "A dialogue avatar portrait pack with 12 original non-celebrity game character bust portraits arranged in a 3 by 4 grid. Clean 2D game portrait art, flat colors, hard opaque edges, black ink outline, simple cel shading only, no glow, no bloom, no smoke, no soft shadows, no transparency effects, no decorative frames, no UI boxes, no copyrighted characters, no text, no logos, no watermark."
     },
     {
       "id": "game-vfx-frames",
       "title": "Game VFX Frames",
       "size": "1536x1024",
-      "prompt": "A game VFX sprite sheet with 16 frames in a single row, a fire-to-magic impact burst expanding then fading, consistent origin point, no camera movement, bright core, smoke wisps, readable frame progression, no text, no logos, no watermark, no frame border."
+      "prompt": "A strict-friendly pixel-art VFX sprite sheet with exactly 16 frames in one horizontal row. A magic impact burst made of blocky pixel-art diamonds and square star shapes expanding then fading. Hard square pixels, limited palette of yellow, orange, purple, and white, no antialiasing, no gradients, no soft glow, no bloom, no smoke, no motion blur, no transparency effects, no shadows, no frame borders, no text, no logos, no watermark."
     }
   ]
 }
